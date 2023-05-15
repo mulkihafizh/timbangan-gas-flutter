@@ -114,10 +114,17 @@ class _ActivateScreenState extends State<ActivateScreen> {
                 'Timbangan Gas',
                 style: TextStyle(color: Theme.of(context).primaryColor),
               ),
-              Icon(
-                Icons.qr_code_scanner,
-                size: 30,
-                color: Theme.of(context).primaryColor,
+              IconButton(
+                onPressed: () {
+                  Navigator.push(context, MaterialPageRoute(builder: (context) {
+                    return const ScanScreen();
+                  }));
+                },
+                icon: Icon(
+                  Icons.qr_code_scanner,
+                  size: 30,
+                  color: Theme.of(context).primaryColor,
+                ),
               ),
             ],
           ),
