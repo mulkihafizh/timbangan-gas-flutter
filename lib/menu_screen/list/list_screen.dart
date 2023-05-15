@@ -1,11 +1,7 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:timbangan_gas/menu_screen/list/gasDetail_screen.dart.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
-
-import 'package:timbangan_gas/menu_screen/menu_screen.dart';
 
 class ListScreen extends StatefulWidget {
   const ListScreen({super.key});
@@ -29,6 +25,7 @@ class _ListScreenState extends State<ListScreen> {
     });
   }
 
+  @override
   void initState() {
     super.initState();
     _getData();

@@ -8,6 +8,7 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
+  bool testingButton = false;
   @override
   Widget build(BuildContext context) {
     return DefaultTextStyle(

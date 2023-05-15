@@ -33,6 +33,7 @@ class _ActivateScreenState extends State<ActivateScreen> {
     return randomNumbers;
   }
 
+  @override
   void initState() {
     super.initState();
     setState(() {
@@ -75,11 +76,7 @@ class _ActivateScreenState extends State<ActivateScreen> {
 
     gasList.add(addData);
     var stringData = jsonEncode(gasList);
-    print(stringData);
-    print('iniString');
     await prefs.setString('timbanganGas', stringData);
-
-    print('inibaru');
 
     _nameField.clear();
     _guidField.clear();
