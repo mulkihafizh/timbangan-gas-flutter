@@ -15,7 +15,7 @@ class ActivateScreen extends StatefulWidget {
 class _ActivateScreenState extends State<ActivateScreen> {
   List<Map<String, dynamic>> gasList = [];
   String _name = '';
-  late int _guid;
+  String _guid = '';
   final _guidField = TextEditingController();
   final _nameField = TextEditingController();
   List randomNumber = [];
@@ -36,10 +36,6 @@ class _ActivateScreenState extends State<ActivateScreen> {
   @override
   void initState() {
     super.initState();
-    setState(() {
-      randomNumber = generateRandomNumbers(5);
-      gasList = [];
-    });
   }
 
   void _storeData() async {
@@ -47,11 +43,12 @@ class _ActivateScreenState extends State<ActivateScreen> {
     var newData = prefs.getString('timbanganGas');
     List<Map<String, dynamic>> convertedData =
         List<Map<String, dynamic>>.from(jsonDecode(newData ?? "[]"));
+    prefs.clear;
 
     setState(() {
       randomNumber = generateRandomNumbers(5);
-      gasList = convertedData;
     });
+    gasList = convertedData;
 
     if (_guidField.text.isEmpty || _nameField.text.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -83,7 +80,7 @@ class _ActivateScreenState extends State<ActivateScreen> {
     FocusScope.of(context).unfocus();
     setState(() {
       _name = '';
-      _guid = 0;
+      _guid = '';
     });
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(
@@ -170,7 +167,7 @@ class _ActivateScreenState extends State<ActivateScreen> {
                   keyboardType: TextInputType.number,
                   onChanged: (value) {
                     setState(() {
-                      _guid = int.parse(value);
+                      _guid = value;
                     });
                   },
                   controller: _guidField,

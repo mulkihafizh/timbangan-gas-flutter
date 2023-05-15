@@ -29,7 +29,7 @@ class _GasDetailScreenState extends State<GasDetailScreen> {
   var _gasDetail;
   List<DayData> chartData = [];
 
-  Future<void> deleteItemFromList(int guid) async {
+  Future<void> deleteItemFromList(String guid) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String? existingData = prefs.getString('timbanganGas');
     final confirmed = await showDialog(

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:timbangan_gas/menu_screen/list/gasDetail_screen.dart.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
+import 'dart:math';
 
 class ListScreen extends StatefulWidget {
   const ListScreen({super.key});
@@ -12,6 +13,20 @@ class ListScreen extends StatefulWidget {
 
 class _ListScreenState extends State<ListScreen> {
   List<Map<String, dynamic>> gasList = [];
+  List randomNumber = [];
+  var addData;
+
+  List<int> generateRandomNumbers(int count) {
+    Random random = Random();
+    List<int> randomNumbers = [];
+
+    for (int i = 0; i < count; i++) {
+      int randomNumber = random.nextInt(24) + 1;
+      randomNumbers.add(randomNumber);
+    }
+
+    return randomNumbers;
+  }
 
   void _getData() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -23,6 +38,30 @@ class _ListScreenState extends State<ListScreen> {
     setState(() {
       gasList = convertedData;
     });
+  }
+
+  void _addIfNull() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    if (gasList == null || gasList.isEmpty) {
+      setState(() {
+        randomNumber = generateRandomNumbers(5);
+      });
+      addData = {
+        "name": 'Dummy Device',
+        "guid": '01234567890',
+        "penggunaan": {
+          "Sen": randomNumber[0],
+          "Sel": randomNumber[1],
+          "Rab": randomNumber[2],
+          "Kam": randomNumber[3],
+          "Jum": randomNumber[4]
+        }
+      };
+      gasList.add(addData);
+
+      var stringData = jsonEncode(gasList);
+      await prefs.setString('timbanganGas', stringData);
+    }
   }
 
   @override
@@ -53,7 +92,24 @@ class _ListScreenState extends State<ListScreen> {
             color: Theme.of(context).primaryColor,
           ),
           if (gasList.isEmpty)
-            const Expanded(child: Center(child: Text('Data Kosong'))),
+            Expanded(
+                child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                  const Text('Data Kosong'),
+                  const SizedBox(height: 10),
+                  ElevatedButton(
+                      style: ButtonStyle(
+                          backgroundColor: MaterialStateProperty.all<Color>(
+                              Theme.of(context).primaryColor),
+                          shape:
+                              MaterialStateProperty.all<RoundedRectangleBorder>(
+                                  RoundedRectangleBorder(
+                                      borderRadius:
+                                          BorderRadius.circular(18.0)))),
+                      onPressed: _addIfNull,
+                      child: const Text('Tambah Data Dummy'))
+                ])),
           if (gasList.isNotEmpty)
             Expanded(
                 child: ListView.builder(
